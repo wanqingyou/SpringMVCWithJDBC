@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <!-- get benefit of annotations -->
+    <context:annotation-config></context:annotation-config>
+    <context:component-scan base-package="com.spring"></context:component-scan>
+    <!-- properties file holds database connection parameters -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" p:location="/WEB-INF/jdbc.properties"></bean>
+    <!-- configure datasource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}" p:password="${jdbc.password}">
+    </bean>
+    
+    <!-- declare spring DAO -->
+    <bean id="appDao" class="com.spring.dao.DAOImpl">
+    	<property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- declare spring Service -->
+    <bean id="appService" class="com.spring.service.AppServiceImpl">
+        <property name="appDao" ref="appDao"></property>
+    </bean>
+    
+</beans>
